@@ -93,6 +93,7 @@ def categorize_grant(title: str, description: str) -> str:
         ):
             resp += chunk.text
 
+        print(f"Categorized grant '{title}' as: {resp.strip()}")
         return resp
     except Exception as e:
         print(f"Error categorizing grant '{title}': {e}")
