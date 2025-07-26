@@ -9,12 +9,12 @@ from transformers import (
 )
 
 # === Config ===
-CSV_PATH = "raw_grants_data.csv"      # your CSV file
-MODEL_DIR = "./grant_classifier"                # path to model dir (with safetensors)
-TEXT_COLUMNS = ['prog_name_en', 'agreement_title_en', 'description_en']  # columns to combine
+CSV_PATH = "pulled_grants.csv"      # your CSV file
+MODEL_DIR = "./classifier"                # path to model dir (with safetensors)
+TEXT_COLUMNS = ['Recipient', 'Agreement', 'Description']  # columns to combine
 
 # === Load CSV (first 100 rows) ===
-df = pd.read_csv(CSV_PATH).sample(100)
+df = pd.read_csv(CSV_PATH)
 df['text'] = df[TEXT_COLUMNS].fillna('').astype(str).agg(' '.join, axis=1)
 
 # Create Hugging Face Dataset
@@ -38,7 +38,7 @@ pipeline = TextClassificationPipeline(
 )
 
 # Load clean label mapping
-with open("grant_classifier/label_encoder_classes.txt") as f:
+with open("classifier/label_encoder_classes.txt") as f:
     labels = [line.strip() for line in f if line.strip()]
 id2label = {i: label for i, label in enumerate(labels)}
 label2id = {label: i for i, label in enumerate(labels)}
